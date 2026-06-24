@@ -49,7 +49,42 @@
   .banner svg{flex:none;}
   .banner b{text-transform:uppercase;letter-spacing:.09em;font-weight:700;font-size:12px;}
 
-  .wrap{max-width:1140px;margin:0 auto;padding:30px 28px 38px;}
+  /* shell: sidebar + content */
+  .shell{display:flex;align-items:flex-start;max-width:1340px;margin:0 auto;}
+
+  /* sidebar */
+  .sidenav{position:sticky;top:0;align-self:flex-start;flex:none;width:240px;
+    max-height:100vh;overflow:auto;padding:22px 14px 18px;
+    border-right:1px solid var(--line);background:rgba(11,17,25,.45);}
+  .sidenav .brand{display:flex;align-items:center;gap:11px;padding:4px 10px 16px;
+    margin-bottom:14px;border-bottom:1px solid var(--line-soft);}
+  .sidenav .mark{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(150deg,#3f7ce0,#6aa4ff);box-shadow:0 4px 14px rgba(106,164,255,.3);}
+  .sidenav .bname{font-weight:600;font-size:14px;letter-spacing:-.01em;line-height:1.25;}
+  .sidenav .bmeta{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:2px;}
+  .navgroup{margin-bottom:14px;}
+  .navgroup > .glabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);padding:0 11px;margin:0 0 6px;}
+  .navitem{display:flex;align-items:center;gap:10px;width:100%;
+    padding:8px 11px;border-radius:9px;border:0;background:none;cursor:pointer;
+    color:var(--muted);font-family:var(--sans);font-size:13.5px;font-weight:500;
+    text-align:left;letter-spacing:-.005em;transition:background .15s,color .15s;}
+  .navitem:hover{background:rgba(106,164,255,.07);color:var(--ink);}
+  .navitem:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .navitem .ic{flex:none;width:16px;height:16px;color:var(--faint);transition:color .15s;}
+  .navitem:hover .ic{color:var(--muted);}
+  .navitem .lb{flex:1;}
+  .navitem .st{font-family:var(--mono);font-size:9px;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--faint);background:var(--panel-soft);border:1px solid var(--line-soft);
+    border-radius:5px;padding:2px 6px;white-space:nowrap;}
+  .navitem.active{background:rgba(106,164,255,.14);color:#fff;}
+  .navitem.active .ic{color:var(--accent);}
+  .navitem.active .st{color:#9fe7c6;background:rgba(70,197,142,.12);border-color:rgba(70,197,142,.32);}
+  .navfoot{margin-top:16px;padding:13px 11px 0;border-top:1px solid var(--line-soft);
+    font-family:var(--mono);font-size:10px;color:var(--faint);line-height:1.85;}
+  .navfoot b{color:var(--muted);font-weight:500;}
+
+  .wrap{flex:1;min-width:0;max-width:1120px;padding:30px 30px 40px;}
 
   header.brief{display:flex;justify-content:space-between;align-items:flex-end;
     gap:22px;flex-wrap:wrap;margin-bottom:26px;}
@@ -63,32 +98,67 @@
     text-align:right;line-height:1.85;white-space:nowrap;}
   header.brief .meta b{color:var(--muted);font-weight:500;}
 
-  /* stat cards */
+  /* stat cards (clickable) */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:24px;}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:13px;
-    padding:17px 18px;position:relative;overflow:hidden;}
+    padding:17px 18px;position:relative;overflow:hidden;cursor:pointer;
+    font-family:inherit;color:inherit;text-align:left;width:100%;
+    transition:border-color .16s,background .16s;}
+  .stat:hover{border-color:#33485c;background:#16212e;}
+  .stat:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .stat::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;
     border-radius:0 3px 3px 0;background:var(--accent);opacity:.55;}
   .stat.bad::before{background:var(--bad);}
+  .stat .exp{position:absolute;top:12px;right:12px;width:19px;height:19px;border-radius:6px;
+    display:grid;place-items:center;color:var(--faint);transition:color .15s,background .15s,transform .2s;}
+  .stat:hover .exp{color:var(--muted);background:var(--panel-soft);}
+  .stat.open .exp{transform:rotate(45deg);color:var(--accent);}
   .stat .n{font-family:var(--mono);font-size:31px;font-weight:500;letter-spacing:-.02em;line-height:1;}
   .stat.bad .n{color:var(--bad);} .stat.acc .n{color:var(--accent);}
-  .stat .l{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.4;}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.4;padding-right:14px;}
+  .stat .more{max-height:0;overflow:hidden;opacity:.4;
+    transition:max-height .3s ease,opacity .3s ease,margin .3s ease;
+    font-size:11px;color:var(--muted);line-height:1.5;}
+  .stat.open .more{max-height:120px;opacity:1;margin-top:10px;
+    padding-top:9px;border-top:1px solid var(--line-soft);}
 
   .grid{display:grid;grid-template-columns:1.5fr 1fr;gap:17px;align-items:start;}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px 22px;}
-  .panel > h2{font-family:var(--mono);font-size:11.5px;font-weight:500;
+  .panelhead{display:flex;align-items:center;gap:14px;margin-bottom:4px;}
+  .panel h2{font-family:var(--mono);font-size:11.5px;font-weight:500;
     letter-spacing:.13em;text-transform:uppercase;color:var(--faint);
-    margin:0 0 4px;display:flex;align-items:center;gap:9px;}
-  .panel > h2::after{content:"";flex:1;height:1px;background:var(--line-soft);}
-  .panel .lede{font-size:13px;color:var(--muted);margin:0 0 16px;}
+    margin:0;flex:1;display:flex;align-items:center;gap:9px;}
+  .panel h2::after{content:"";flex:1;height:1px;background:var(--line-soft);}
+  .panel .lede{font-size:13px;color:var(--muted);margin:8px 0 14px;}
+  .panel .lede b{color:var(--muted);font-weight:600;}
+
+  /* percent/count toggle */
+  .seg-toggle{display:inline-flex;background:#0c151e;border:1px solid var(--line-soft);
+    border-radius:8px;padding:2px;gap:2px;flex:none;}
+  .tg{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);background:none;border:0;border-radius:6px;padding:5px 11px;
+    cursor:pointer;font-weight:500;transition:background .15s,color .15s;}
+  .tg:hover:not(.active){color:var(--ink);}
+  .tg.active{background:var(--accent);color:#06121f;}
+  .tg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
   /* funnel */
-  .stage{padding:13px 0;border-top:1px solid var(--line-soft);}
-  .stage:first-of-type{border-top:0;padding-top:4px;}
-  .stage .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+  .stage{padding:0;border-top:1px solid var(--line-soft);}
+  .stage:first-of-type{border-top:0;}
+  .stagehead{display:block;width:100%;background:none;border:0;margin:0;
+    padding:13px 0;font:inherit;color:inherit;text-align:left;cursor:pointer;
+    border-radius:8px;transition:background .14s;}
+  .stagehead:hover{background:rgba(106,164,255,.045);}
+  .stagehead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .stage:first-of-type .stagehead{padding-top:4px;}
+  .stage .row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .stage .name{font-weight:600;font-size:14.5px;}
+  .stage .rt{display:inline-flex;align-items:center;gap:11px;flex:none;}
   .stage .rate{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:nowrap;}
   .stage .rate b{color:var(--ink);font-weight:500;}
+  .chev{width:15px;height:15px;color:var(--faint);flex:none;transition:transform .25s,color .15s;}
+  .stagehead:hover .chev{color:var(--muted);}
+  .stage.open .chev{transform:rotate(180deg);color:var(--accent);}
 
   .track{height:14px;border-radius:5px;background:#0c151e;
     border:1px solid var(--line-soft);margin:9px 0 7px;overflow:hidden;}
@@ -109,7 +179,30 @@
   .stage.cliff .cum b{color:var(--bad);}
   .stage .note{font-size:12.5px;color:var(--muted);text-align:right;}
 
-  .stage.total{border-top:1px solid var(--line);margin-top:5px;padding-top:15px;}
+  /* expandable drawer */
+  .drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;}
+  .stage.open .drawer{grid-template-rows:1fr;}
+  .drawer-in{overflow:hidden;min-height:0;}
+  .dd{padding:4px 2px 14px;}
+  .ddintro{margin:0 0 12px;font-size:13px;color:var(--muted);line-height:1.5;
+    border-left:2px solid var(--line);padding-left:12px;}
+  .counts{display:flex;gap:8px;flex-wrap:wrap;}
+  .cpill{font-family:var(--mono);font-size:11.5px;background:#0c151e;
+    border:1px solid var(--line-soft);border-radius:7px;padding:5px 10px;color:var(--muted);}
+  .cpill b{color:var(--ink);font-weight:500;}
+  .cpill.drop b{color:var(--bad);}
+  .ddhead{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);margin:15px 0 9px;}
+  .reason{margin:0 0 10px;}
+  .reason:last-child{margin-bottom:0;}
+  .reason .rl{display:flex;justify-content:space-between;gap:10px;
+    font-size:12.5px;color:var(--muted);margin-bottom:5px;}
+  .reason .rl b{color:var(--ink);font-weight:500;font-family:var(--mono);font-size:12px;}
+  .rbar{height:6px;border-radius:4px;background:#0c151e;border:1px solid var(--line-soft);overflow:hidden;}
+  .rbar > i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,rgba(244,123,93,.45),rgba(244,123,93,.82));}
+
+  .stage.total{border-top:1px solid var(--line);margin-top:5px;padding:15px 0 2px;}
   .stage.total .name{font-family:var(--sans);font-weight:600;font-size:14.5px;letter-spacing:-.01em;}
   .stage.total .rate{font-family:var(--mono);font-size:15px;color:var(--bad);font-weight:500;}
 
@@ -149,8 +242,29 @@
     text-transform:uppercase;color:var(--faint);margin-bottom:5px;}
   footer.method b{color:var(--ink);font-weight:500;}
 
+  /* toast for placeholder nav */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);
+    display:flex;align-items:center;gap:10px;max-width:90vw;
+    background:#0a121b;border:1px solid var(--line);color:var(--ink);
+    font-size:12.5px;padding:10px 15px;border-radius:11px;
+    box-shadow:0 14px 40px rgba(0,0,0,.55);z-index:60;
+    opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;}
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+  .toast svg{flex:none;color:var(--warn);}
+
   @keyframes grow{to{transform:scaleX(1);}}
 
+  @media (max-width:980px){
+    .shell{flex-direction:column;}
+    .sidenav{position:static;width:100%;max-height:none;overflow:visible;
+      border-right:0;border-bottom:1px solid var(--line);padding:14px 18px;}
+    .sidenav .brand,.navgroup > .glabel,.navfoot,.navitem .st{display:none;}
+    .navgroup{margin-bottom:8px;}
+    .navgroup .items{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;
+      scrollbar-width:none;}
+    .navgroup .items::-webkit-scrollbar{display:none;}
+    .navitem{flex:none;width:auto;white-space:nowrap;}
+  }
   @media (max-width:860px){
     .grid{grid-template-columns:1fr;}
     .stats{grid-template-columns:repeat(2,1fr);}
@@ -165,6 +279,7 @@
   }
   @media (prefers-reduced-motion:reduce){
     .fill{animation:none;transform:scaleX(1);}
+    .drawer,.chev,.more,.toast,.stat,.navitem,.tg,.stagehead{transition:none;}
   }
 </style>
 </head>
@@ -181,101 +296,284 @@
     <span><b>Illustrative recreation</b> &middot; sample data for demonstration — the original brief and its source data are no longer available.</span>
   </div>
 
-  <div class="wrap">
-    <header class="brief">
-      <div>
-        <div class="ey">Discovery synthesis</div>
-        <h1>Email Editor — <em>Activation Friction</em></h1>
-        <p class="sub">Where new senders drop off between sign-up and a first send, and why.</p>
+  <div class="shell">
+    <aside class="sidenav">
+      <nav aria-label="Project sections">
+        <div class="brand">
+          <span class="mark"><svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"><rect x="1.7" y="3.3" width="12.6" height="9.4" rx="1.6"/><path d="M2 4.5l6 4 6-4"/></svg></span>
+          <div><div class="bname">Editor Activation</div><div class="bmeta">v0.3 · main</div></div>
+        </div>
+
+        <div class="navgroup">
+          <p class="glabel">Discovery</p>
+          <div class="items">
+            <button class="navitem active" type="button" aria-current="page">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2.5h6l3 3v8H3z"/><path d="M9 2.5v3h3"/><path d="M5.5 8.5h4M5.5 10.5h3"/></svg>
+              <span class="lb">Friction brief</span><span class="st">live</span></button>
+            <button class="navitem" type="button" data-label="Research">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.3 3.3"/></svg>
+              <span class="lb">Research</span><span class="st">12 notes</span></button>
+            <button class="navitem" type="button" data-label="PRD">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="10" height="12" rx="1.5"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3"/></svg>
+              <span class="lb">PRD</span><span class="st">draft</span></button>
+          </div>
+        </div>
+
+        <div class="navgroup">
+          <p class="glabel">Delivery</p>
+          <div class="items">
+            <button class="navitem" type="button" data-label="Designs &amp; prototype">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 1.8l6 3.1-6 3.1-6-3.1z"/><path d="M2 8l6 3.1L14 8"/><path d="M2 10.9L8 14l6-3.1"/></svg>
+              <span class="lb">Designs &amp; prototype</span><span class="st">in review</span></button>
+            <button class="navitem" type="button" data-label="Release plan">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.3" y="3" width="11.4" height="10.7" rx="1.6"/><path d="M2.3 6h11.4M5.3 1.8v2.4M10.7 1.8v2.4M5.5 9l1.6 1.6L10.5 8"/></svg>
+              <span class="lb">Release plan</span><span class="st">planned</span></button>
+            <button class="navitem" type="button" data-label="Experiments">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 2v3.7L3 11.4A1.5 1.5 0 0 0 4.3 13.7h7.4A1.5 1.5 0 0 0 13 11.4L9.7 5.7V2"/><path d="M5.3 2h5.4M4.7 9.5h6.6"/></svg>
+              <span class="lb">Experiments</span><span class="st">queued</span></button>
+          </div>
+        </div>
+
+        <div class="navgroup">
+          <p class="glabel">Track</p>
+          <div class="items">
+            <button class="navitem" type="button" data-label="Metrics dashboard">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2.5v11h11"/><path d="M5 11V8M8 11V5.5M11 11V9"/></svg>
+              <span class="lb">Metrics dashboard</span><span class="st">live</span></button>
+            <button class="navitem" type="button" data-label="Decision log">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M5.5 8l1.7 1.7L10.7 6"/></svg>
+              <span class="lb">Decision log</span><span class="st">8 ADRs</span></button>
+            <button class="navitem" type="button" data-label="Changelog">
+              <svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 2H13v4.5L7 12.5 2.5 8z"/><circle cx="10.4" cy="4.6" r=".9"/></svg>
+              <span class="lb">Changelog</span><span class="st">v0.3</span></button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="navfoot">
+        <div><b>Owner</b> · Activation squad</div>
+        <div><b>Synced</b> · weekly from warehouse</div>
       </div>
-      <div class="meta">
-        <b>Constant Contact</b> &middot; DNA + UX Research<br>
-        quant&nbsp;·&nbsp;Claude Code × warehouse<br>
-        qual&nbsp;·&nbsp;internal research corpus<br>
-        updated weekly · one link
+    </aside>
+
+    <main class="wrap">
+      <header class="brief">
+        <div>
+          <div class="ey">Discovery synthesis</div>
+          <h1>Email Editor — <em>Activation Friction</em></h1>
+          <p class="sub">Where new senders drop off between sign-up and a first send, and why.</p>
+        </div>
+        <div class="meta">
+          <b>Constant Contact</b> &middot; DNA + UX Research<br>
+          quant&nbsp;·&nbsp;Claude Code × warehouse<br>
+          qual&nbsp;·&nbsp;internal research corpus<br>
+          updated weekly · one link
+        </div>
+      </header>
+
+      <div class="stats">
+        <button class="stat bad" type="button" aria-expanded="false">
+          <span class="exp"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></span>
+          <div class="n">12%</div><div class="l">of users who reach the editor send a first email</div>
+          <div class="more">Distinct users who reached the editor and sent ≥1 campaign within 14 days. Base cohort n≈1,200.</div>
+        </button>
+        <button class="stat" type="button" aria-expanded="false">
+          <span class="exp"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></span>
+          <div class="n">59%</div><div class="l">stall before placing a single element</div>
+          <div class="more">Sessions that opened the editor but never placed a block, image, or text element before exiting.</div>
+        </button>
+        <button class="stat acc" type="button" aria-expanded="false">
+          <span class="exp"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></span>
+          <div class="n">#1</div><div class="l">word in feedback: &ldquo;clunky&rdquo;</div>
+          <div class="more">Most frequent descriptor across 18 interviews + support tickets (appears ×31). See word counts at right.</div>
+        </button>
+        <button class="stat" type="button" aria-expanded="false">
+          <span class="exp"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></span>
+          <div class="n">3×</div><div class="l">more likely to convert after a first send</div>
+          <div class="more">Users who complete one send convert to paid at ≈3.1× the rate of non-senders over 90 days.</div>
+        </button>
       </div>
-    </header>
 
-    <div class="stats">
-      <div class="stat bad"><div class="n">12%</div><div class="l">of users who reach the editor send a first email</div></div>
-      <div class="stat"><div class="n">59%</div><div class="l">stall before placing a single element</div></div>
-      <div class="stat acc"><div class="n">#1</div><div class="l">word in feedback: &ldquo;clunky&rdquo;</div></div>
-      <div class="stat"><div class="n">3×</div><div class="l">more likely to convert after a first send</div></div>
-    </div>
+      <div class="grid">
+        <section class="panel">
+          <div class="panelhead">
+            <h2>Friction by funnel stage</h2>
+            <div class="seg-toggle" role="group" aria-label="Show values as">
+              <button class="tg active" type="button" data-mode="pct">Percent</button>
+              <button class="tg" type="button" data-mode="cnt">Count</button>
+            </div>
+          </div>
+          <p class="lede">Each step is the share of the prior cohort that continues. <b>Select any step</b> to break down who dropped and why.</p>
 
-    <div class="grid">
-      <section class="panel">
-        <h2>Friction by funnel stage</h2>
-        <p class="lede">Each step is the share of the prior cohort that continues. Drop-off compounds — by the last step only 1 in 8 of the original cohort remain.</p>
+          <div class="stage" data-stage>
+            <button class="stagehead" type="button" aria-expanded="false">
+              <div class="row"><span class="name">Sign up → open the editor</span>
+                <span class="rt"><span class="rate"><b data-pct="84%" data-cnt="1,008">84%</b> <span data-pct="continue" data-cnt="of 1,200">continue</span></span>
+                <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>
+              </div>
+              <div class="track" title="1,008 of 1,200 continued · 192 dropped at this step">
+                <div class="fill" style="width:100%;animation-delay:.05s"><span class="seg solid" style="width:84%"></span><span class="seg lost" style="width:16%"></span></div>
+              </div>
+              <div class="foot"><span class="cum"><b data-pct="84%" data-cnt="1,008">84%</b> <span data-pct="of cohort remain" data-cnt="of 1,200 remain">of cohort remain</span></span><span class="note">Most reach the editor. The drop-off starts once they're inside.</span></div>
+            </button>
+            <div class="drawer"><div class="drawer-in"><div class="dd">
+              <p class="ddintro">A healthy top of funnel — verification and plan selection cost a little, but most people make it into the editor.</p>
+              <div class="counts"><span class="cpill">Entered <b>1,200</b></span><span class="cpill">Continued <b>1,008</b></span><span class="cpill drop">Dropped <b>192</b></span></div>
+              <div class="ddhead">Top drop-off reasons</div>
+              <div class="reason"><div class="rl"><span>Email verification stall</span><b>47%</b></div><div class="rbar"><i style="width:47%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Abandoned during plan selection</span><b>31%</b></div><div class="rbar"><i style="width:31%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Other / unknown</span><b>22%</b></div><div class="rbar"><i style="width:22%"></i></div></div>
+            </div></div></div>
+          </div>
 
-        <div class="stage">
-          <div class="row"><span class="name">Sign up → open the editor</span><span class="rate"><b>84%</b> continue</span></div>
-          <div class="track"><div class="fill" style="width:100%;animation-delay:.05s">
-            <span class="seg solid" style="width:84%"></span><span class="seg lost" style="width:16%"></span></div></div>
-          <div class="foot"><span class="cum"><b>84%</b> of cohort remain</span><span class="note">Most reach the editor. The drop-off starts once they're inside.</span></div>
-        </div>
+          <div class="stage cliff" data-stage>
+            <button class="stagehead" type="button" aria-expanded="false">
+              <div class="row"><span class="name">Open → place a first element</span>
+                <span class="rt"><span class="rate"><b data-pct="41%" data-cnt="413">41%</b> <span data-pct="continue" data-cnt="of 1,008">continue</span></span>
+                <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>
+              </div>
+              <div class="track" title="413 of 1,008 continued · 595 dropped at this step">
+                <div class="fill" style="width:84%;animation-delay:.18s"><span class="seg solid" style="width:40.9%"></span><span class="seg lost" style="width:59.1%"></span></div>
+              </div>
+              <div class="foot"><span class="cum"><b data-pct="34%" data-cnt="413">34%</b> <span data-pct="of cohort remain" data-cnt="of 1,200 remain">of cohort remain</span></span><span class="note">The sharpest cliff. &ldquo;Too many options, no clear starting point.&rdquo;</span></div>
+            </button>
+            <div class="drawer"><div class="drawer-in"><div class="dd">
+              <p class="ddintro">The make-or-break moment. Six in ten never place a single element — they meet a blank canvas, can't find a starting point, and leave.</p>
+              <div class="counts"><span class="cpill">Entered <b>1,008</b></span><span class="cpill">Continued <b>413</b></span><span class="cpill drop">Dropped <b>595</b></span></div>
+              <div class="ddhead">Top drop-off reasons</div>
+              <div class="reason"><div class="rl"><span>No clear starting point</span><b>44%</b></div><div class="rbar"><i style="width:44%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Template / option overwhelm</span><b>33%</b></div><div class="rbar"><i style="width:33%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Looked for a guide, then exited</span><b>23%</b></div><div class="rbar"><i style="width:23%"></i></div></div>
+            </div></div></div>
+          </div>
 
-        <div class="stage cliff">
-          <div class="row"><span class="name">Open → place a first element</span><span class="rate"><b>41%</b> continue</span></div>
-          <div class="track"><div class="fill" style="width:84%;animation-delay:.18s">
-            <span class="seg solid" style="width:40.9%"></span><span class="seg lost" style="width:59.1%"></span></div></div>
-          <div class="foot"><span class="cum"><b>34%</b> of cohort remain</span><span class="note">The sharpest cliff. &ldquo;Too many options, no clear starting point.&rdquo;</span></div>
-        </div>
+          <div class="stage" data-stage>
+            <button class="stagehead" type="button" aria-expanded="false">
+              <div class="row"><span class="name">Build → reach scheduling</span>
+                <span class="rt"><span class="rate"><b data-pct="63%" data-cnt="260">63%</b> <span data-pct="continue" data-cnt="of 413">continue</span></span>
+                <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>
+              </div>
+              <div class="track" title="260 of 413 continued · 153 dropped at this step">
+                <div class="fill" style="width:34.4%;animation-delay:.31s"><span class="seg solid" style="width:63.1%"></span><span class="seg lost" style="width:36.9%"></span></div>
+              </div>
+              <div class="foot"><span class="cum"><b data-pct="22%" data-cnt="260">22%</b> <span data-pct="of cohort remain" data-cnt="of 1,200 remain">of cohort remain</span></span><span class="note">Accordions hide required fields; people stall on options they don't need.</span></div>
+            </button>
+            <div class="drawer"><div class="drawer-in"><div class="dd">
+              <p class="ddintro">Those who start building mostly push through, but nested accordions hide required fields and quietly drain momentum.</p>
+              <div class="counts"><span class="cpill">Entered <b>413</b></span><span class="cpill">Continued <b>260</b></span><span class="cpill drop">Dropped <b>153</b></span></div>
+              <div class="ddhead">Top drop-off reasons</div>
+              <div class="reason"><div class="rl"><span>Lost in nested accordions</span><b>41%</b></div><div class="rbar"><i style="width:41%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Unsure which fields are required</span><b>38%</b></div><div class="rbar"><i style="width:38%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Saved a draft and left</span><b>21%</b></div><div class="rbar"><i style="width:21%"></i></div></div>
+            </div></div></div>
+          </div>
 
-        <div class="stage">
-          <div class="row"><span class="name">Build → reach scheduling</span><span class="rate"><b>63%</b> continue</span></div>
-          <div class="track"><div class="fill" style="width:34.4%;animation-delay:.31s">
-            <span class="seg solid" style="width:63.1%"></span><span class="seg lost" style="width:36.9%"></span></div></div>
-          <div class="foot"><span class="cum"><b>22%</b> of cohort remain</span><span class="note">Accordions hide required fields; people stall on options they don't need.</span></div>
-        </div>
+          <div class="stage" data-stage>
+            <button class="stagehead" type="button" aria-expanded="false">
+              <div class="row"><span class="name">Schedule → send</span>
+                <span class="rt"><span class="rate"><b data-pct="55%" data-cnt="143">55%</b> <span data-pct="continue" data-cnt="of 260">continue</span></span>
+                <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>
+              </div>
+              <div class="track" title="143 of 260 continued · 117 dropped at this step">
+                <div class="fill" style="width:21.7%;animation-delay:.44s"><span class="seg solid" style="width:54.8%"></span><span class="seg lost" style="width:45.2%"></span></div>
+              </div>
+              <div class="foot"><span class="cum"><b data-pct="12%" data-cnt="143">12%</b> <span data-pct="of cohort remain" data-cnt="of 1,200 remain">of cohort remain</span></span><span class="note">Uncertainty at the finish: &ldquo;I wasn't sure it actually sent.&rdquo;</span></div>
+            </button>
+            <div class="drawer"><div class="drawer-in"><div class="dd">
+              <p class="ddintro">At the finish line, uncertainty does the damage — people aren't sure the send worked, so they hesitate or bail.</p>
+              <div class="counts"><span class="cpill">Entered <b>260</b></span><span class="cpill">Continued <b>143</b></span><span class="cpill drop">Dropped <b>117</b></span></div>
+              <div class="ddhead">Top drop-off reasons</div>
+              <div class="reason"><div class="rl"><span>Unsure it would actually send</span><b>39%</b></div><div class="rbar"><i style="width:39%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Wanted a test send first</span><b>34%</b></div><div class="rbar"><i style="width:34%"></i></div></div>
+              <div class="reason"><div class="rl"><span>Scheduling vs send-now confusion</span><b>27%</b></div><div class="rbar"><i style="width:27%"></i></div></div>
+            </div></div></div>
+          </div>
 
-        <div class="stage">
-          <div class="row"><span class="name">Schedule → send</span><span class="rate"><b>55%</b> continue</span></div>
-          <div class="track"><div class="fill" style="width:21.7%;animation-delay:.44s">
-            <span class="seg solid" style="width:54.8%"></span><span class="seg lost" style="width:45.2%"></span></div></div>
-          <div class="foot"><span class="cum"><b>12%</b> of cohort remain</span><span class="note">Uncertainty at the finish: &ldquo;I wasn't sure it actually sent.&rdquo;</span></div>
-        </div>
+          <div class="stage total">
+            <div class="row"><span class="name">End to end · reach editor → first send</span><span class="rate"><span data-pct="12%" data-cnt="143 / 1,200">12%</span></span></div>
+            <div class="foot"><span class="cum">the activation moment — and the design target</span></div>
+          </div>
 
-        <div class="stage total">
-          <div class="row"><span class="name">End to end · reach editor → first send</span><span class="rate">12%</span></div>
-          <div class="foot"><span class="cum">the activation moment — and the design target</span></div>
-        </div>
+          <div class="legend">
+            <span><i class="k1"></i> still in funnel</span>
+            <span><i class="k2"></i> dropped at this step</span>
+          </div>
+        </section>
 
-        <div class="legend">
-          <span><i class="k1"></i> still in funnel</span>
-          <span><i class="k2"></i> dropped at this step</span>
-        </div>
-      </section>
+        <section class="panel">
+          <h2>Voice of the customer</h2>
+          <blockquote class="quote key">
+            <p>&ldquo;Every time I open it, I have to relearn where everything is.&rdquo;</p>
+            <span class="who">established user · 2+ years</span>
+          </blockquote>
+          <blockquote class="quote">
+            <p>&ldquo;There are so many buttons. I don't know where I'm supposed to start.&rdquo;</p>
+            <span class="who">new sender · first campaign</span>
+          </blockquote>
+          <blockquote class="quote">
+            <p>&ldquo;It felt clunky. Things didn't go where I expected them to.&rdquo;</p>
+            <span class="who">small business owner</span>
+          </blockquote>
+          <div class="tagrow">
+            <span class="chip lead">clunky <b>×31</b></span>
+            <span class="chip">confusing <b>×22</b></span>
+            <span class="chip">too many options <b>×18</b></span>
+            <span class="chip">where do I start <b>×14</b></span>
+          </div>
+        </section>
+      </div>
 
-      <section class="panel">
-        <h2>Voice of the customer</h2>
-        <blockquote class="quote key">
-          <p>&ldquo;Every time I open it, I have to relearn where everything is.&rdquo;</p>
-          <span class="who">established user · 2+ years</span>
-        </blockquote>
-        <blockquote class="quote">
-          <p>&ldquo;There are so many buttons. I don't know where I'm supposed to start.&rdquo;</p>
-          <span class="who">new sender · first campaign</span>
-        </blockquote>
-        <blockquote class="quote">
-          <p>&ldquo;It felt clunky. Things didn't go where I expected them to.&rdquo;</p>
-          <span class="who">small business owner</span>
-        </blockquote>
-        <div class="tagrow">
-          <span class="chip lead">clunky <b>×31</b></span>
-          <span class="chip">confusing <b>×22</b></span>
-          <span class="chip">too many options <b>×18</b></span>
-          <span class="chip">where do I start <b>×14</b></span>
-        </div>
-      </section>
-    </div>
-
-    <footer class="method">
-      <div><div class="mh">Quant</div><b>Pulled from the warehouse</b> with Claude Code, validated with DNA.</div>
-      <div><div class="mh">Qual</div><b>Recurring themes</b> mined from the internal research corpus + CS notes.</div>
-      <div><div class="mh">Sample · illustrative</div><b>~1,200 session replays</b> · 18 interviews · 6 weeks.</div>
-    </footer>
+      <footer class="method">
+        <div><div class="mh">Quant</div><b>Pulled from the warehouse</b> with Claude Code, validated with DNA.</div>
+        <div><div class="mh">Qual</div><b>Recurring themes</b> mined from the internal research corpus + CS notes.</div>
+        <div><div class="mh">Sample · illustrative</div><b>~1,200 session replays</b> · 18 interviews · 6 weeks.</div>
+      </footer>
+    </main>
   </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11h.01" stroke-linecap="round"/></svg>
+    <span class="tmsg"></span>
+  </div>
+
+  <script>
+  (function(){
+    // expandable funnel stages
+    document.querySelectorAll('.stage[data-stage] .stagehead').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var st=btn.closest('.stage');
+        var open=st.classList.toggle('open');
+        btn.setAttribute('aria-expanded',String(open));
+      });
+    });
+    // expandable stat cards
+    document.querySelectorAll('.stat').forEach(function(c){
+      c.addEventListener('click',function(){
+        var open=c.classList.toggle('open');
+        c.setAttribute('aria-expanded',String(open));
+      });
+    });
+    // percent / count toggle
+    var toggles=document.querySelectorAll('.tg');
+    var valueEls=document.querySelectorAll('[data-pct]');
+    function setMode(m){
+      valueEls.forEach(function(el){
+        el.textContent = (m==='cnt') ? el.getAttribute('data-cnt') : el.getAttribute('data-pct');
+      });
+      toggles.forEach(function(t){t.classList.toggle('active', t.getAttribute('data-mode')===m);});
+    }
+    toggles.forEach(function(t){t.addEventListener('click',function(){setMode(t.getAttribute('data-mode'));});});
+    // placeholder nav links
+    var toast=document.getElementById('toast'), tmsg=toast.querySelector('.tmsg'), tt;
+    document.querySelectorAll('.navitem:not(.active)').forEach(function(n){
+      n.addEventListener('click',function(){
+        tmsg.textContent=n.getAttribute('data-label')+' — illustrative placeholder, not wired up in this demo.';
+        toast.classList.add('show');
+        clearTimeout(tt); tt=setTimeout(function(){toast.classList.remove('show');},2600);
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>
